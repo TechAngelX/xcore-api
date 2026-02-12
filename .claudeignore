@@ -1,0 +1,16 @@
+# Secrets & credentials
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+
+# IDE settings
+.idea/
+.vscode/
+*.iml
+
+# Build output
+target/
