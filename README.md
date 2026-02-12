@@ -40,11 +40,9 @@ This project is designed as a demonstration of professional backend engineering 
 - A running PostgreSQL database (local or cloud-hosted)
 
 ---
-
 ## Installation and Setup
 
 ### 1. Clone the repository
-
 ```bash
 git clone https://github.com/TechAngelX/xcore-tasks-api.git
 cd xcore-tasks-api
@@ -53,15 +51,42 @@ cd xcore-tasks-api
 ### 2. Configure environment variables
 
 Create a `.env` file in the project root with the following variables:
-
 ```env
-DB_HOST=localhost
+DB_HOST=your_database_host
 DB_PORT=5432
-DB_NAME=xcore_tasks
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
-JWT_SECRET=your-secret-key-at-least-256-bits-long
-PORT=8080
+DB_NAME=postgres
+DB_USERNAME=postgres
+DB_PASSWORD=your_database_password
+JWT_SECRET=your-randomly-generated-secret-key-at-least-256-bits
+```
+
+**Generate a secure JWT secret:**
+```bash
+openssl rand -hex 32
+```
+
+**Important:** The `.env` file is gitignored and will not be committed to version control. This keeps your secrets safe.
+
+### 3. Run the application
+
+**Load environment variables and start the application:**
+```bash
+export $(cat .env | xargs) && ./mvnw spring-boot:run
+```
+
+**Why this command?**  
+Spring Boot does not automatically read `.env` files. The `export` command loads your environment variables into your terminal session, making them available to the application at runtime.
+
+The API will start at **http://localhost:8080**.
+
+**Alternative (IntelliJ IDEA):**  
+Install the [EnvFile plugin](https://plugins.jetbrains.com/plugin/7861-envfile) to automatically load `.env` when running from the IDE.
+
+### Other useful commands
+```bash
+./mvnw test                     # Run all tests
+./mvnw clean package            # Build JAR artifact
+./mvnw clean package -DskipTests # Build without running tests
 ```
 
 The application loads this file automatically via Spring Boot's `spring.config.import`.

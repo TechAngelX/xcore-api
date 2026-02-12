@@ -2,14 +2,19 @@ spring:
   application:
     name: xcore
 
-  config:
-    import: optional:file:.env[.properties]
-
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 3          # Low number for free tier
+      minimum-idle: 1                # Keep at least 1 connection ready
+      connection-timeout: 20000      # 20 seconds
+      idle-timeout: 300000           # 5 minutes (close idle connections)
+      max-lifetime: 600000           # 10 minutes (recreate connections)
+      connection-test-query: SELECT 1  # Test connections before use
+      leak-detection-threshold: 60000  # Detect connection leaks
 
   jpa:
     hibernate:
@@ -19,11 +24,11 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false  # Disable the warning you're seeing
 
 server:
   port: ${PORT:8080}
 
-# JWT Configuration
 jwt:
   secret: ${JWT_SECRET:your-very-secure-secret-key-that-is-at-least-256-bits-long}
-  expiration: 86400000  # 24 hours
+  expiration: 86400000
