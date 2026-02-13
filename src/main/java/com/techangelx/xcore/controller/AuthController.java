@@ -29,5 +29,12 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         AuthResponse response = authService.login(request);
         return ResponseEntity.ok(response);
+   
+   
+    }
+   
+    @GetMapping("/")
+    public String welcome() {
+        return "Xcore API is Online. Please use Postman to interact with endpoints.";
     }
 }
